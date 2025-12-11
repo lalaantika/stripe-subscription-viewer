@@ -1,4 +1,3 @@
-// amplify/backend.ts
 import { defineBackend } from '@aws-amplify/backend';
 import { Stack } from 'aws-cdk-lib';
 import {
@@ -15,7 +14,7 @@ import { createBillingPortalSession } from './functions/create-billing-portal-se
 import { getBillingHistory } from './functions/get-billing-history/resource';
 import { stripeWebhook } from './functions/stripe-webhook/resource';
 
-// 1. Register resources with Amplify
+// Register resources with Amplify
 const backend = defineBackend({
   auth,
   getSubscription,
@@ -24,12 +23,12 @@ const backend = defineBackend({
   stripeWebhook,
 });
 
-// 2. Create a dedicated stack for the HTTP API
+// Create a dedicated stack for the HTTP API
 const apiStack = backend.createStack('subscription-api-stack');
 
-// 3. Create DynamoDB table for subscription cache
+//  Create DynamoDB table for subscription cache
 const subscriptionTable = new dynamodb.Table(
-  backend.stack, // you can also use apiStack here if you prefer
+  backend.stack, 
   'SubscriptionStateTable',
   {
     partitionKey: {
@@ -54,7 +53,7 @@ backend.stripeWebhook.addEnvironment(
 );
 subscriptionTable.grantReadWriteData(backend.stripeWebhook.resources.lambda);
 
-// 4. Create Lambda integrations for HTTP API
+// Create Lambda integrations for HTTP API
 const getSubscriptionIntegration = new HttpLambdaIntegration(
   'GetSubscriptionIntegration',
   backend.getSubscription.resources.lambda,
@@ -75,7 +74,7 @@ const stripeWebhookIntegration = new HttpLambdaIntegration(
   backend.stripeWebhook.resources.lambda,
 );
 
-// 5. Create HTTP API
+// Create HTTP API
 const httpApi = new HttpApi(apiStack, 'SubscriptionApi', {
   apiName: 'subscriptionApi',
   corsPreflight: {
@@ -105,14 +104,14 @@ httpApi.addRoutes({
   integration: getBillingHistoryIntegration,
 });
 
-// ✅ Webhook must be POST and use a Lambda integration, not the function object
+// Webhook must be POST and use a Lambda integration, not the function object
 httpApi.addRoutes({
   path: '/stripe-webhook',
   methods: [HttpMethod.POST],
   integration: stripeWebhookIntegration,
 });
 
-// 7. Output API config into amplify_outputs.json
+// Output API config into amplify_outputs.json
 backend.addOutput({
   custom: {
     API: {

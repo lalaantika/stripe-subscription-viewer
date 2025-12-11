@@ -1,4 +1,3 @@
-// src/pages/Dashboard.tsx
 import React, { useEffect, useState } from 'react';
 import { useAuthenticator } from '@aws-amplify/ui-react';
 import SubscriptionStatus from '../components/SubscriptionStatus';
@@ -41,7 +40,6 @@ export const Dashboard: React.FC = () => {
       setBillingHistory(data);
     } catch (e) {
       console.error('Failed to load billing history', e);
-      // You can show a separate error for billing history if you want
     }
   };
 

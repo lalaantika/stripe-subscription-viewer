@@ -1,4 +1,3 @@
-// amplify/functions/get-subscription/mapper.ts
 import type Stripe from 'stripe';
 
 export type SubscriptionStatus =

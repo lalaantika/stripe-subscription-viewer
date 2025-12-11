@@ -1,4 +1,3 @@
-// amplify/functions/stripe-webhook/handler.ts
 import type { APIGatewayProxyHandlerV2 } from 'aws-lambda';
 import Stripe from 'stripe';
 import { DynamoDBClient, PutItemCommand } from '@aws-sdk/client-dynamodb';
@@ -26,7 +25,7 @@ const fix = (s?: string | null) => (s && s.length > 0 ? s : '');
 export const handler: APIGatewayProxyHandlerV2 = async (event) => {
   const tableName = env.SUBSCRIPTION_TABLE_NAME;
 
-  // 1️⃣ Read raw body (don't parse JSON before verifying)
+  // Read raw body (don't parse JSON before verifying)
   let rawBody = event.body || '';
   if (event.isBase64Encoded) {
     rawBody = Buffer.from(rawBody, 'base64').toString('utf8');
@@ -60,7 +59,7 @@ export const handler: APIGatewayProxyHandlerV2 = async (event) => {
     type: stripeEvent.type,
   });
 
-  // 2️⃣ We only handle subscription events for this stretch goal
+  // We only handle subscription events for this stretch goal
   if (
     stripeEvent.type === 'customer.subscription.created' ||
     stripeEvent.type === 'customer.subscription.updated' ||

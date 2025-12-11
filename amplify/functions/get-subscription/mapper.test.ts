@@ -1,4 +1,3 @@
-// amplify/functions/get-subscription/mapper.test.ts
 import { describe, it, expect } from 'vitest';
 import {
   mapStripeStatus,
@@ -7,7 +6,6 @@ import {
   type SubscriptionItem,
 } from './mapper';
 
-// Stripe types are a bit heavy; we’ll just fake a minimal shape and cast as any.
 function makeFakeStripeSub(overrides: Partial<any> = {}): any {
   return {
     id: 'sub_123',

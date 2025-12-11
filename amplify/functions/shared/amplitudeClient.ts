@@ -1,4 +1,3 @@
-// amplify/functions/shared/amplitudeClient.ts
 import type { APIGatewayProxyEventV2 } from 'aws-lambda';
 
 // Lambda Node 18/20 has global fetch, but TS may not know about it
@@ -44,7 +43,7 @@ export async function logAmplitudeEvent(event: AmplitudeEvent): Promise<void> {
 
 /**
  * Extract a stable user id from API Gateway event.
- * We cast requestContext to any so TS doesn't complain about `authorizer`.
+ * Cast requestContext to any so TS doesn't complain about `authorizer`.
  */
 export function getUserIdFromEvent(apiEvent: APIGatewayProxyEventV2): string {
   const rc: any = apiEvent.requestContext as any;

@@ -1,4 +1,3 @@
-// amplify/functions/get-subscription/handler.ts
 import type { APIGatewayProxyHandlerV2 } from 'aws-lambda';
 import Stripe from 'stripe';
 import { env } from '$amplify/env/get-subscription';
@@ -12,7 +11,7 @@ import {
   getUserIdFromEvent,
 } from '../shared/amplitudeClient';
 
-// ⬇️ Shared types + pure mapper logic
+// Shared types + pure mapper logic
 import type { SubscriptionItem, SubscriptionStatus } from './mapper';
 import { mapStripeSubscriptionToItem } from './mapper';
 
@@ -46,7 +45,7 @@ export const handler: APIGatewayProxyHandlerV2 = async (event) => {
   const userId = getUserIdFromEvent(event);
 
   try {
-    // 1️⃣ Try to read from local DB cache first
+    //Try to read from local DB cache first
     if (TABLE_NAME) {
       try {
         const getResult = await ddb.send(
@@ -112,7 +111,7 @@ export const handler: APIGatewayProxyHandlerV2 = async (event) => {
       }
     }
 
-    // 2️⃣ No cache (or error) → fall back to Stripe
+    // No cache (or error) → fall back to Stripe
     const subs = await stripe.subscriptions.list({
       customer: env.STRIPE_CUSTOMER_ID,
       status: 'all',
@@ -172,7 +171,7 @@ export const handler: APIGatewayProxyHandlerV2 = async (event) => {
       };
     }
 
-    // 3️⃣ Write latest state into local DB cache
+    //  Write latest state into local DB cache
     if (TABLE_NAME) {
       try {
         await ddb.send(
@@ -195,7 +194,7 @@ export const handler: APIGatewayProxyHandlerV2 = async (event) => {
       }
     }
 
-    // 4️⃣ Amplitude: subscription viewed (from Stripe)
+    // Amplitude: subscription viewed (from Stripe)
     void logAmplitudeEvent({
       event_type: 'subscription_status_viewed',
       user_id: userId,

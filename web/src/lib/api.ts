@@ -1,4 +1,3 @@
-// src/lib/api.ts
 import type { SubscriptionResponse } from './types';
 import outputs from '../../amplify_outputs.json';
 import type { BillingHistoryResponse } from './types';
@@ -10,7 +9,7 @@ const subscriptionApi =
 const BASE_URL: string = subscriptionApi?.endpoint ?? '';
 
 if (!BASE_URL) {
-  // This will help you notice if amplify_outputs isn't wired correctly
+  // This will help  notice if amplify_outputs isn't wired correctly
   console.warn('Subscription API base URL is not configured in amplify_outputs.json');
 }
 
@@ -21,7 +20,7 @@ export async function getSubscription(): Promise<SubscriptionResponse> {
 
   const res = await fetch(`${BASE_URL}subscription`, {
     method: 'GET',
-    // For now we’re not using cookies/JWT; you can add credentials later.
+    // For now not using cookies/JWT; can add credentials later.
   });
 
   if (!res.ok) {
@@ -53,7 +52,7 @@ export async function getBillingHistory(): Promise<BillingHistoryResponse> {
   const res = await fetch(`${BASE_URL}/billing-history`, {
     method: 'GET',
     // No credentials here – avoids CORS conflict with Access-Control-Allow-Origin: *
-    // credentials: 'omit', // (default for cross-origin if you want to be explicit)
+    // credentials: 'omit', // (default for cross-origin if  want to be explicit)
   });
 
   if (!res.ok) {
